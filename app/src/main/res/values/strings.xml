@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DTTM</string>
+    <string name="app_name">Discord Timezone Tag Maker</string>
     <string-array name="displayModesArray">
         <item>Default</item>
         <item>Short Date [d]</item>
