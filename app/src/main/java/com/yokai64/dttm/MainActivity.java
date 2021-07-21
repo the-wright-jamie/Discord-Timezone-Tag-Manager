@@ -20,7 +20,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    
+
     //List of class global variables
     Button btnDatePicker,
             btnTimePicker,
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             txtFormattedOutput,
             txtResultTag;
     DateTimeFormatter myFormatObj;
+    Spinner spinner;
     long unixTime;
 
     //When the activity is created
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnTimePicker.setOnClickListener(this);
         btnCopyTag.setOnClickListener(this);
 
-        Spinner spinner = findViewById(R.id.displayModeSpinner);
+        spinner = findViewById(R.id.displayModeSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.displayModesArray, android.R.layout.simple_spinner_item);
@@ -64,6 +65,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                updateTag((String) txtDate.getText(), (String) txtTime.getText());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
     }
 
     private void updateTag(String date, String time) {
@@ -79,8 +93,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             unixTime = zonedDateTime.withZoneSameInstant(ZoneId.of("UTC")).toEpochSecond();
 
+            String tag = "<t:" + unixTime;
+
+            char spinnerSelected = spinner.getSelectedItem().toString().charAt(spinner.getSelectedItem().toString().length() - 2);
+
+            switch (spinnerSelected){
+                case ('l'):
+                    tag = tag + ">";
+                    break;
+                case ('d'):
+                    tag = tag + ":d>";
+                    break;
+                case ('D'):
+                    tag = tag + ":D>";
+                    break;
+                case ('f'):
+                    tag = tag + ":f>";
+                    break;
+                case ('F'):
+                    tag = tag + ":F>";
+                    break;
+                case ('t'):
+                    tag = tag + ":t>";
+                    break;
+                case ('T'):
+                    tag = tag + ":T>";
+                    break;
+                case ('R'):
+                    tag = tag + ":R>";
+                    break;
+            }
+
             txtFormattedOutput.setText("Local Time: " + formattedDate + "\nUTC: " + zonedDateTime.withZoneSameInstant(ZoneId.of("UTC")).format(myFormatObj) + "");
-            txtResultTag.setText("<t:" + unixTime + ">");
+            txtResultTag.setText(tag);
         }
     }
 

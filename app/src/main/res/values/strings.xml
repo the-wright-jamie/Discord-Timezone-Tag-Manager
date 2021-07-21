@@ -6,8 +6,8 @@
         <item>Long Date [D]</item>
         <item>Short Date and Time [f]</item>
         <item>Long Date and Time [F]</item>
-        <item>Hours &amp; minutes time [t]</item>
-        <item>Hours, minutes &amp; seconds time [T]</item>
+        <item>Hours &amp; minutes only [t]</item>
+        <item>Hours, minutes &amp; seconds only [T]</item>
         <item>Relative [R]</item>
     </string-array>
 </resources>
