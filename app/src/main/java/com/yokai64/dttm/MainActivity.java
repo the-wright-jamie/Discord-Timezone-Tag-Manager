@@ -5,96 +5,70 @@ import android.app.TimePickerDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.os.Build;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
 
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements
-        View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button btnDatePicker, btnTimePicker, copyTag;
-    TextView txtDate, resultTag;
-    TextView txtTime;
-    private int mYear, mMonth, mDay, mHour, mMinute;
+    /*
+    Set up app on boot:
+        Set Date as current date on the date line
+        Set Time as current time on the time line
+        Update the formatted text line
+        Update the tag
+
+     When the time is changed:
+        Set the date line
+        Set the time line
+        Update the formatted text line
+        Update the tag line
+     */
+
+    //List of class global variables
+    Button btnDatePicker,
+            btnTimePicker,
+            btnCopyTag;
+    TextView txtDate,
+            txtTime,
+            txtResultTag;
     long unixTime;
 
+    //When the activity is created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnDatePicker=(Button)findViewById(R.id.btn_date);
-        btnTimePicker=(Button)findViewById(R.id.btn_time);
-        copyTag=(Button)findViewById(R.id.copyTag);
-        txtDate=(TextView)findViewById(R.id.in_date);
-        txtTime=(TextView)findViewById(R.id.in_time);
-        resultTag=(TextView)findViewById(R.id.result_tag);
-
-        // Get Current Date
-        final Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
-        String sDate1=mDay + "/" + (mMonth + 1) + "/" + mYear;
-        Date date1= null;
-        try {
-            date1 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        assert date1 != null;
-        txtDate.setText(dateFormatter.format(date1));
-
-        // Get Current Time
-        mHour = c.get(Calendar.HOUR_OF_DAY);
-        mMinute = c.get(Calendar.MINUTE);
-
-        txtTime.setText(mHour + ":" + mMinute);
-
-        //updateTag((String) txtDate.getText(), (String) txtTime.getText());
+        //Set up variables
+        //Buttons
+        btnDatePicker = findViewById(R.id.setDateButton);
+        btnTimePicker =findViewById(R.id.setTimeButton);
+        btnCopyTag = findViewById(R.id.copyTagButton);
+        //TextViews
+        txtDate = findViewById(R.id.dateLine);
+        txtTime = findViewById(R.id.timeLine);
+        txtResultTag = findViewById(R.id.resultantTagText);
 
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
 
-        copyTag.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("Discord Timezone Tag", resultTag.getText());
-                clipboard.setPrimaryClip(clip);
-            }
-        });
-
-
-        Spinner spinner = (Spinner) findViewById(R.id.planets_spinner);
+        Spinner spinner = findViewById(R.id.displayModeSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.planets_array, android.R.layout.simple_spinner_item);
+                R.array.displayModesArray, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -102,8 +76,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void updateTag(String date, String time) {
-        TextView tag=(TextView)findViewById(R.id.result_tag);
-        TextView formatted=(TextView)findViewById(R.id.formatted_output);
+        TextView tag=(TextView)findViewById(R.id.resultantTagText);
+        TextView formatted=(TextView)findViewById(R.id.formattedOutputText);
 
         Date myDate = parseDate(date, time);
 
@@ -132,6 +106,12 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
 
+        int mMinute,
+                mHour,
+                mDay,
+                mMonth,
+                mYear;
+
         if (v == btnDatePicker) {
 
             // Get Current Date
@@ -146,7 +126,14 @@ public class MainActivity extends AppCompatActivity implements
 
                         @Override
                         public void onDateSet(DatePicker view, int year,
-                                              int monthOfYear, int dayOfMonth) {
+                                              int monthOfYear, int dayOfMonth)
+                        {
+                            Calendar mCalendar = new GregorianCalendar();
+                            TimeZone mTimeZone = mCalendar.getTimeZone();
+                            int mGMTOffset = mTimeZone.getRawOffset();
+                            System.out.println("GMT offset is " + TimeUnit.HOURS.convert(mGMTOffset, TimeUnit.MILLISECONDS) + " hours");
+
+                            System.out.println(Instant.now());
 
                             DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
                             String sDate1=dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
@@ -188,6 +175,11 @@ public class MainActivity extends AppCompatActivity implements
                         }
                     }, mHour, mMinute, false);
             timePickerDialog.show();
+        }
+        if (v == btnCopyTag) {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("Discord Timezone Tag", txtResultTag.getText());
+            clipboard.setPrimaryClip(clip);
         }
     }
 }
