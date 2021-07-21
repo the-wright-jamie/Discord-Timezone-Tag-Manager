@@ -20,21 +20,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    /*
-    Set up app on boot:
-        Set Date as current date on the date line
-        Set Time as current time on the time line
-        Update the formatted text line
-        Update the tag
-
-     When the time is changed:
-        Set the date line
-        Set the time line
-        Update the formatted text line
-        Update the tag line
-     */
-
+    
     //List of class global variables
     Button btnDatePicker,
             btnTimePicker,
@@ -43,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             txtTime,
             txtFormattedOutput,
             txtResultTag;
+    DateTimeFormatter myFormatObj;
     long unixTime;
 
     //When the activity is created
@@ -61,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtTime = findViewById(R.id.timeLine);
         txtFormattedOutput = findViewById(R.id.formattedOutputText);
         txtResultTag = findViewById(R.id.resultantTagText);
+        //Date Formatter
+        myFormatObj = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
 
         //onClick Listeners
         btnDatePicker.setOnClickListener(this);
@@ -82,12 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(date.equals("-") || time.equals("-")) {
             return;
         } else {
-            //prepare the formatter
-            DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
-
             //parse the time and date in
-            ZonedDateTime zonedDateTime = parseDate(date, time).toInstant()
-                    .atZone(ZoneId.systemDefault());
+            ZonedDateTime zonedDateTime = parseDate(date, time).toInstant().atZone(ZoneId.systemDefault());
 
             //format the input date
             String formattedDate = zonedDateTime.format(myFormatObj);
@@ -133,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth)
                         {
-                            DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
                             String sDate1=dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
                             Date date1= null;
                             try {
@@ -143,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
 
                             assert date1 != null;
+                            SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM dd, yyyy");
                             txtDate.setText(dateFormatter.format(date1));
                             updateTag((String) txtDate.getText(), (String) txtTime.getText());
 
