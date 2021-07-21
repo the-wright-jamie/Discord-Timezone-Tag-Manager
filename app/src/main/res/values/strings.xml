@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">DTTM</string>
+    <string-array name="planets_array">
+        <item>Default</item>
+        <item>Short Date [d]</item>
+        <item>Long Date [D]</item>
+        <item>Short Date and Time [f]</item>
+        <item>Long Date and Time [F]</item>
+        <item>Hours &amp; minutes time [t]</item>
+        <item>Hours, minutes &amp; seconds time [T]</item>
+        <item>Relative [R]</item>
+    </string-array>
 </resources>
