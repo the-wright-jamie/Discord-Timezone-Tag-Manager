@@ -14,9 +14,7 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             btnCopyTag;
     TextView txtDate,
             txtTime,
+            txtFormattedOutput,
             txtResultTag;
     long unixTime;
 
@@ -60,10 +59,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //TextViews
         txtDate = findViewById(R.id.dateLine);
         txtTime = findViewById(R.id.timeLine);
+        txtFormattedOutput = findViewById(R.id.formattedOutputText);
         txtResultTag = findViewById(R.id.resultantTagText);
 
+        //onClick Listeners
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
+        btnCopyTag.setOnClickListener(this);
 
         Spinner spinner = findViewById(R.id.displayModeSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -76,22 +78,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateTag(String date, String time) {
-        TextView tag=(TextView)findViewById(R.id.resultantTagText);
-        TextView formatted=(TextView)findViewById(R.id.formattedOutputText);
+        //if the time and date has not been set yet
+        if(date.equals("-") || time.equals("-")) {
+            return;
+        } else {
+            //prepare the formatter
+            DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
 
-        Date myDate = parseDate(date, time);
+            //parse the time and date in
+            ZonedDateTime zonedDateTime = parseDate(date, time).toInstant()
+                    .atZone(ZoneId.systemDefault());
 
-        unixTime = myDate.getTime()/ 1000L;
+            //format the input date
+            String formattedDate = zonedDateTime.format(myFormatObj);
 
-        tag.setText("<t:" + unixTime + ">");
+            unixTime = zonedDateTime.withZoneSameInstant(ZoneId.of("UTC")).toEpochSecond();
 
-        LocalDateTime funny = myDate.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
-        String formattedDate = funny.format(myFormatObj);
-        formatted.setText(formattedDate);
+            txtFormattedOutput.setText("Local Time: " + formattedDate + "\nUTC: " + zonedDateTime.withZoneSameInstant(ZoneId.of("UTC")).format(myFormatObj) + "");
+            txtResultTag.setText("<t:" + unixTime + ">");
+        }
     }
 
     public static Date parseDate(String date, String time) {
@@ -128,13 +133,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth)
                         {
-                            Calendar mCalendar = new GregorianCalendar();
-                            TimeZone mTimeZone = mCalendar.getTimeZone();
-                            int mGMTOffset = mTimeZone.getRawOffset();
-                            System.out.println("GMT offset is " + TimeUnit.HOURS.convert(mGMTOffset, TimeUnit.MILLISECONDS) + " hours");
-
-                            System.out.println(Instant.now());
-
                             DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
                             String sDate1=dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
                             Date date1= null;
