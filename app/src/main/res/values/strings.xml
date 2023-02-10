@@ -1,13 +1,3 @@
 <resources>
-    <string name="app_name">Discord Timezone Tag Maker</string>
-    <string-array name="displayModesArray">
-        <item>Default</item>
-        <item>Short Date [d]</item>
-        <item>Long Date [D]</item>
-        <item>Short Date and Time [f]</item>
-        <item>Long Date and Time [F]</item>
-        <item>Hours &amp; minutes only [t]</item>
-        <item>Hours, minutes &amp; seconds only [T]</item>
-        <item>Relative [R]</item>
-    </string-array>
+    <string name="app_name">DTTM</string>
 </resources>
