@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32.283405mm"
+   height="19.380201mm"
+   viewBox="0 0 32.283405 19.380201"
+   version="1.1"
+   id="svg5"
+   inkscape:export-filename="bitmap.svg"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.72782688"
+     inkscape:cx="397.07245"
+     inkscape:cy="562.6338"
+     inkscape:window-width="1920"
+     inkscape:window-height="992"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-65.825066,-105.21685)">
+    <g
+       aria-label="&lt;t:"
+       id="text113"
+       style="font-size:25.4px;fill:#008cff;fill-opacity:1;stroke-width:0.264583">
+      <path
+         d="m 78.956866,108.82365 -13.1318,6.477 v 2.6416 l 13.1318,6.6548 v -2.6924 l -10.6426,-5.207 10.6426,-5.1054 z"
+         style="font-family:'FOT-NewRodin Pro';-inkscape-font-specification:'FOT-NewRodin Pro';fill:#008cff;fill-opacity:1"
+         id="path165" />
+      <path
+         d="m 91.733047,124.52085 v -2.6162 c -0.5588,0.0508 -1.3716,0.1016 -2.1082,0.1016 -0.127,0 -0.2286,0 -0.3556,0 -1.8542,-0.0508 -2.3622,-0.381 -2.3622,-2.2098 v -8.255 h 4.8006 v -2.4892 h -4.7752 v -3.8354 h -2.8448 v 3.8354 h -3.3782 v 2.4892 h 3.3782 v 8.7884 c 0,3.175 1.905,4.191 5.1054,4.2418 0.8128,0 2.032,-0.0254 2.54,-0.0762 z"
+         style="font-family:'FOT-NewRodin Pro';-inkscape-font-specification:'FOT-NewRodin Pro';fill:#008cff;fill-opacity:1"
+         id="path167" />
+      <path
+         d="m 98.10847,112.76065 v -3.7084 h -3.7846 v 3.7084 z m 0,11.6586 v -3.7084 h -3.7846 v 3.683 z"
+         style="font-family:'FOT-NewRodin Pro';-inkscape-font-specification:'FOT-NewRodin Pro';fill:#008cff;fill-opacity:1"
+         id="path169" />
+    </g>
+  </g>
+</svg>
